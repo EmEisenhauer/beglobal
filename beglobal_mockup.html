@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeGlobal - Intercultural Exchange</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .phone-container {
+            width: 375px;
+            height: 812px;
+            background: #000;
+            border-radius: 40px;
+            padding: 8px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            position: relative;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 32px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .status-bar {
+            height: 44px;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            color: #333;
+            font-size: 14px;
+            font-weight: 600;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .app-content {
+            height: calc(100% - 44px);
+            overflow-y: auto;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-bottom: 1px solid #f0f0f0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+
+
+        .logo-text {
+            font-family: 'TT Firs Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: #f8f9fa;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .nav-tab:hover:not(.active) {
+            background: #e9ecef;
+        }
+
+        .prompt-card {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            margin: 20px;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .prompt-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
+        }
+
+        .prompt-timer {
+            background: rgba(255,255,255,0.9);
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .prompt-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .share-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .share-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .feed {
+            padding: 0 20px 20px;
+        }
+
+        .story-card {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .story-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .story-header {
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .story-info {
+            flex: 1;
+        }
+
+        .story-name {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 2px;
+        }
+
+        .story-meta {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .flag {
+            font-size: 18px;
+        }
+
+        .story-video {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            cursor: pointer;
+        }
+
+        .story-audio {
+            width: 100%;
+            height: 120px;
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            gap: 10px;
+        }
+
+        .audio-icon {
+            font-size: 36px;
+        }
+
+        .audio-duration {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .story-text {
+            padding: 20px;
+            background: #f8f9fa;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #2d3748;
+            border-left: 4px solid #667eea;
+        }
+
+
+
+        .story-actions {
+            padding: 15px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 14px;
+            transition: color 0.2s ease;
+        }
+
+        .action-btn:hover {
+            color: #667eea;
+        }
+
+        .filter-bar {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+        }
+
+        .filter-chip {
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            font-size: 14px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-chip:hover {
+            border-color: #667eea;
+            background: #f0f2ff;
+        }
+
+        .floating-record {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(255,107,107,0.4);
+            transition: transform 0.2s ease;
+            z-index: 100;
+        }
+
+        .floating-record:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <div class="phone-screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>BeGlobal</span>
+                <span>🔋 100%</span>
+            </div>
+            
+            <div class="app-content">
+                <div class="header">
+                    <div class="logo">
+                        <div class="logo-text">BeGlobal</div>
+                    </div>
+                    <div class="subtitle">Share your story. Discover theirs.</div>
+                    <div class="nav-tabs">
+                        <button class="nav-tab active">Local</button>
+                        <button class="nav-tab">Global</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-timer">⏰ 3 days left to share</div>
+                    <div class="prompt-text">"What is something from your culture that others often misunderstand?"</div>
+                    <button class="share-button">Share Your Story</button>
+                </div>
+
+                <div class="filter-bar">
+                    <div class="filter-chip">🇺🇸 USA</div>
+                    <div class="filter-chip">🇦🇷 Argentina</div>
+                    <div class="filter-chip">🇸🇦 Saudi Arabia</div>
+                    <div class="filter-chip">🇦🇿 Azerbaijan</div>
+                    <div class="filter-chip">+ More</div>
+                </div>
+
+                <div class="feed" id="localFeed">
+                    <div class="story-card">
+                        <div class="story-header">
+                            <div class="avatar">S</div>
+                            <div class="story-info">
+                                <div class="story-name">Sarah Johnson</div>
+                                <div class="story-meta">Temple University • 1 hour ago</div>
+                            </div>
+                            <div class="flag">🇺🇸</div>
+                        </div>
+                        <div class="story-video">▶️</div>
+                        <div class="story-actions">
+                            <button class="action-btn">💛 23</button>
+                            <button class="action-btn">💬 5</button>
+                            <button class="action-btn">🔗 Share</button>
+                        </div>
+                    </div>
+
+                    <div class="story-card">
+                        <div class="story-header">
+                            <div class="avatar">M</div>
+                            <div class="story-info">
+                                <div class="story-name">Mike Chen</div>
+                                <div class="story-meta">Temple University • 3 hours ago</div>
+                            </div>
+                            <div class="flag">🇺🇸</div>
+                        </div>
+                        <div class="story-audio">
+                            <div class="audio-icon">🎙️</div>
+                            <div class="audio-duration">1:32</div>
+                        </div>
+                        <div class="story-actions">
+                            <button class="action-btn">💛 47</button>
+                            <button class="action-btn">💬 12</button>
+                            <button class="action-btn">🔗 Share</button>
+                        </div>
+                    </div>
+
+                    <div class="story-card">
+                        <div class="story-header">
+                            <div class="avatar">A</div>
+                            <div class="story-info">
+                                <div class="story-name">Anonymous</div>
+                                <div class="story-meta">Temple University • 6 hours ago</div>
+                            </div>
+                            <div class="flag">🇺🇸</div>
+                        </div>
+                        <div class="story-text">
+                            "Growing up in a small Pennsylvania town, I always felt like I had to choose between my Korean heritage and fitting in with my classmates. It wasn't until college that I realized I could be both - proudly Korean AND proudly American."
+                        </div>
+                        <div class="story-actions">
+                            <button class="action-btn">💛 34</button>
+                            <button class="action-btn">💬 8</button>
+                            <button class="action-btn">🔗 Share</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feed" id="globalFeed" style="display: none;">
+                    <div class="story-card">
+                        <div class="story-header">
+                            <div class="avatar">F</div>
+                            <div class="story-info">
+                                <div class="story-name">Fatima Al-Rashid</div>
+                                <div class="story-meta">NYU • 2 hours ago</div>
+                            </div>
+                            <div class="flag">🇸🇦</div>
+                        </div>
+                        <div class="story-video">▶️</div>
+                        <div class="story-actions">
+                            <button class="action-btn">💛 67</button>
+                            <button class="action-btn">💬 15</button>
+                            <button class="action-btn">🔗 Share</button>
+                        </div>
+                    </div>
+
+                    <div class="story-card">
+                        <div class="story-header">
+                            <div class="avatar">L</div>
+                            <div class="story-info">
+                                <div class="story-name">Lucas Rodriguez</div>
+                                <div class="story-meta">University of Buenos Aires • 4 hours ago</div>
+                            </div>
+                            <div class="flag">🇦🇷</div>
+                        </div>
+                        <div class="story-audio">
+                            <div class="audio-icon">🎙️</div>
+                            <div class="audio-duration">2:15</div>
+                        </div>
+                        <div class="story-actions">
+                            <button class="action-btn">💛 82</button>
+                            <button class="action-btn">💬 23</button>
+                            <button class="action-btn">🔗 Share</button>
+                        </div>
+                    </div>
+
+                    <div class="story-card">
+                        <div class="story-header">
+                            <div class="avatar">N</div>
+                            <div class="story-info">
+                                <div class="story-name">Nigar Mammadova</div>
+                                <div class="story-meta">Oxford University • 7 hours ago</div>
+                            </div>
+                            <div class="flag">🇦🇿</div>
+                        </div>
+                        <div class="story-text">
+                            "People often assume that because I wear hijab, I must be oppressed or that my voice doesn't matter. What they don't understand is that my choice to wear hijab is exactly that - MY choice. It's empowering, not limiting."
+                        </div>
+                        <div class="story-actions">
+                            <button class="action-btn">💛 156</button>
+                            <button class="action-btn">💬 34</button>
+                            <button class="action-btn">🔗 Share</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="floating-record">🎥</button>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs
+                document.querySelector('.nav-tab.active').classList.remove('active');
+                this.classList.add('active');
+                
+                // Show/hide appropriate feeds
+                const localFeed = document.getElementById('localFeed');
+                const globalFeed = document.getElementById('globalFeed');
+                
+                if (this.textContent === 'Local') {
+                    localFeed.style.display = 'block';
+                    globalFeed.style.display = 'none';
+                } else {
+                    localFeed.style.display = 'none';
+                    globalFeed.style.display = 'block';
+                }
+            });
+        });
+
+        document.querySelectorAll('.filter-chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                this.style.background = '#667eea';
+                this.style.color = 'white';
+                this.style.borderColor = '#667eea';
+                
+                setTimeout(() => {
+                    this.style.background = 'white';
+                    this.style.color = 'black';
+                    this.style.borderColor = '#e0e0e0';
+                }, 1000);
+            });
+        });
+
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.textContent.includes('💛')) {
+                    const count = parseInt(this.textContent.match(/\d+/)[0]);
+                    this.innerHTML = `💛 ${count + 1}`;
+                    this.style.color = '#667eea';
+                }
+            });
+        });
+
+        document.querySelector('.floating-record').addEventListener('click', function() {
+            this.style.background = 'linear-gradient(45deg, #66bb6a, #42a5f5)';
+            this.innerHTML = '🔴';
+            
+            setTimeout(() => {
+                this.style.background = 'linear-gradient(45deg, #ff6b6b, #ffa726)';
+                this.innerHTML = '🎥';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
